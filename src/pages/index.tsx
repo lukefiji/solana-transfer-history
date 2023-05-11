@@ -13,7 +13,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Stack
           spacing={2}
           justifyContent="center"

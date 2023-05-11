@@ -18,6 +18,8 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_WALLET_ADAPTER_NETWORK: z.nativeEnum(WalletAdapterNetwork),
+    NEXT_PUBLIC_ALGOLIA_APP_ID: z.string().min(1),
+    NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY: z.string().min(1),
   },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
@@ -30,5 +32,8 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_WALLET_ADAPTER_NETWORK:
       process.env.NEXT_PUBLIC_WALLET_ADAPTER_NETWORK,
+    NEXT_PUBLIC_ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+    NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY:
+      process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
   },
 });
