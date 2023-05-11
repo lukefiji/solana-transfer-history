@@ -11,4 +11,4 @@ export const sendSOLFormSchema = z.object({
   amount: z.number().gt(0, { message: 'Must be greater than 0' }),
 });
 
-export type SendSOLFormSchemaType = z.infer<typeof sendSOLFormSchema>;
+export type SendSOLFormSchemaInput = z.infer<typeof sendSOLFormSchema>;

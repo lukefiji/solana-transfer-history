@@ -14,8 +14,8 @@ model Transfer {
 
   from      String
   to        String
-  amount    String
-  lamports  String
+  amount    Float
+  lamports  Int
   signature String
-  block     String
+  block     Int
 }

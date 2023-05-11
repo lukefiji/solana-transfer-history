@@ -15,7 +15,6 @@ const Web3Provider = ({ children }: Props) => {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
   const network = env.NEXT_PUBLIC_WALLET_ADAPTER_NETWORK;
 
-  // You can also provide a custom RPC endpoint.
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
   const wallets = useMemo(

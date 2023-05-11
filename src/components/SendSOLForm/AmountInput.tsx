@@ -1,11 +1,11 @@
 import { InputAdornment, TextField } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-import { SendSOLFormSchemaType } from '../../schemas/sendSOLForm';
+import { SendSOLFormSchemaInput } from '../../schemas/sendSOLForm';
 
 interface Props {
-  name: keyof SendSOLFormSchemaType;
-  control: Control<SendSOLFormSchemaType>;
+  name: keyof SendSOLFormSchemaInput;
+  control: Control<SendSOLFormSchemaInput>;
 }
 
 const AmountInput = ({ name, control }: Props) => {

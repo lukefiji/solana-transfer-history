@@ -3,10 +3,12 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 async function getTransfers(_: NextApiRequest, res: NextApiResponse) {
   try {
-    const newEntry = await prisma.transfer.findMany();
-    return res.status(200).json(newEntry);
+    const transfers = await prisma.transfer.findMany();
+
+    return res.status(200).json(transfers);
   } catch (error) {
-    console.error('Request error', error);
+    console.error(error);
+
     res
       .status(500)
       .json({ error: 'Error getting transfer history', success: false });
@@ -14,8 +16,9 @@ async function getTransfers(_: NextApiRequest, res: NextApiResponse) {
 }
 
 async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
-  const body = req.body;
   try {
+    const body = req.body;
+
     const newEntry = await prisma.transfer.create({
       data: {
         from: body.from,
@@ -26,9 +29,11 @@ async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
         block: body.block,
       },
     });
+
     return res.status(200).json(newEntry);
   } catch (error) {
-    console.error('Request error', error);
+    console.error(error);
+
     res
       .status(500)
       .json({ error: 'Error creating transfer history', success: false });

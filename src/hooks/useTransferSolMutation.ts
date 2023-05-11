@@ -1,3 +1,4 @@
+import { Transfer } from '@prisma/client';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import {
@@ -26,14 +27,14 @@ export type UseTransferSolMutationReturn = {
 
 function useTransferSolMutation() {
   const { connection } = useConnection();
-  const { data, refetch } = useWalletBalanceQuery();
   const { publicKey, sendTransaction } = useWallet();
+  const { refetch: refetchWalletBalance } = useWalletBalanceQuery();
 
   const transferSol = useCallback(
     async ({
       recipientAddress,
       amount,
-    }: TransferSolInput): Promise<UseTransferSolMutationReturn> => {
+    }: TransferSolInput): Promise<Transfer> => {
       try {
         if (!publicKey) {
           throw new WalletNotConnectedError();
@@ -64,7 +65,7 @@ function useTransferSolMutation() {
           signature,
         });
 
-        const dbData = {
+        const transferData = {
           from: publicKey.toString(),
           to: recipientAddress,
           amount,
@@ -73,14 +74,23 @@ function useTransferSolMutation() {
           block: signatureResult.context.slot,
         };
 
-        refetch();
+        // Save to database
+        const response = await fetch('/api/transfers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(transferData),
+        });
+        const jsonData: Transfer = await response.json();
 
-        return dbData;
+        // Refetch wallet balance after completion
+        refetchWalletBalance();
+
+        return jsonData;
       } catch (error) {
         throw error;
       }
     },
-    [publicKey, sendTransaction, connection, refetch]
+    [publicKey, sendTransaction, connection, refetchWalletBalance]
   );
 
   return useMutation({ mutationFn: transferSol });

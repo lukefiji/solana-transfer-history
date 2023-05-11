@@ -1,5 +1,5 @@
-import Connect from '@/components/ConnectWallet';
-import SendSOLForm from '@/components/SendSOLForm';
+import { ConnectWallet, SendSOLForm } from '@/components';
+import TransferHistory from '@/components/TransferHistory';
 import { Container, Stack } from '@mui/material';
 import Head from 'next/head';
 
@@ -24,8 +24,10 @@ export default function Home() {
 
           <SendSOLForm />
 
-          <Connect />
+          <ConnectWallet />
         </Stack>
+
+        <TransferHistory />
       </Container>
     </>
   );

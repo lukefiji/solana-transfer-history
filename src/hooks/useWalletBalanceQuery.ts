@@ -24,6 +24,7 @@ function useWalletBalanceQuery() {
   const { publicKey } = useWallet();
 
   return useQuery({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: ['balance', publicKey],
     queryFn: () => fetchWalletBalance(connection, publicKey),
   });

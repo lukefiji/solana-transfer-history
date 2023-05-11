@@ -1,10 +1,10 @@
 import { TextField } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
-import { SendSOLFormSchemaType } from '../../schemas/sendSOLForm';
+import { SendSOLFormSchemaInput } from '../../schemas/sendSOLForm';
 
 interface Props {
-  name: keyof SendSOLFormSchemaType;
-  control: Control<SendSOLFormSchemaType>;
+  name: keyof SendSOLFormSchemaInput;
+  control: Control<SendSOLFormSchemaInput>;
 }
 
 const RecipientAddressInput = ({ name, control }: Props) => {

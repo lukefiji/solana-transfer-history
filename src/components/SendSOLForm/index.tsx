@@ -1,35 +1,33 @@
-import useTransferSolMutation from '@/hooks/useTransferSolMutation';
-import useWalletBalanceQuery from '@/hooks/useWalletBalanceQuery';
-import { sendSOLFormSchema } from '@/schemas/sendSOLForm';
-import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  useTransferSolMutation,
+  useWalletBalanceQuery,
+  useZodForm,
+} from '@/hooks';
+import {
+  SendSOLFormSchemaInput,
+  sendSOLFormSchema,
+} from '@/schemas/sendSOLForm';
 import { Button, Grid, Stack } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { SendSOLFormSchemaType } from '../../schemas/sendSOLForm';
+import { SubmitHandler } from 'react-hook-form';
 import AmountInput from './AmountInput';
 import RecipientAddressInput from './WalletAddressInput';
 
 const SendSOLForm = () => {
   const { publicKey } = useWallet();
-
   const { mutate } = useTransferSolMutation();
+  const { data: walletBalanceData } = useWalletBalanceQuery();
 
-  const { data } = useWalletBalanceQuery();
-  const walletBalance = data?.solBalance;
+  const walletBalance = walletBalanceData?.solBalance;
 
-  const {
-    control,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<SendSOLFormSchemaType>({
+  const { control, handleSubmit, setError } = useZodForm({
+    schema: sendSOLFormSchema,
     defaultValues: {
       recipientAddress: '',
     },
-    resolver: zodResolver(sendSOLFormSchema),
   });
 
-  const onSubmit: SubmitHandler<SendSOLFormSchemaType> = ({
+  const onSubmit: SubmitHandler<SendSOLFormSchemaInput> = ({
     recipientAddress,
     amount,
   }) => {
