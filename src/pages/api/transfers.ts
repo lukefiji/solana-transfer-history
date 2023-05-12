@@ -4,6 +4,7 @@ import {
   createTransferSchema,
 } from '@/schemas/transfer';
 import prisma from '@/server/prisma';
+import { getTimestampInSeconds } from '@/utils';
 import algoliasearch from 'algoliasearch';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -53,19 +54,19 @@ async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
       signature: body.signature,
     };
 
-    // Parallelize saving to DB & sending to algolia
-    const [dbResponse, _] = await Promise.all([
-      await prisma.transfer.create({
-        data: record,
-      }),
-      await algoliaIndex.saveObject({
-        ...record,
-        objectID: body.signature,
-        timestamp: Date.now(),
-      }),
-    ]);
+    // Store to DB
+    const prismaResponse = await prisma.transfer.create({
+      data: record,
+    });
 
-    return res.status(200).json(dbResponse);
+    // Send to Algolia using the same timestamp
+    await algoliaIndex.saveObject({
+      ...prismaResponse,
+      objectID: body.signature,
+      timestamp: getTimestampInSeconds(prismaResponse.createdAt),
+    });
+
+    return res.status(200).json(prismaResponse);
   } catch (error) {
     console.error(error);
 
