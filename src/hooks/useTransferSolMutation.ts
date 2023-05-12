@@ -75,7 +75,7 @@ function useTransferSolMutation() {
     [publicKey, sendTransaction, connection]
   );
 
-  return useMutation({ mutationFn: transferSol });
+  return useMutation({ mutationKey: ['transferSol'], mutationFn: transferSol });
 }
 
 export default useTransferSolMutation;

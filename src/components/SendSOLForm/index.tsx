@@ -1,84 +1,44 @@
-import {
-  useTransferHistoryQuery,
-  useTransferSolMutation,
-  useWalletBalanceQuery,
-  useZodForm,
-} from '@/hooks';
-import {
-  SendSOLFormSchemaInput,
-  sendSOLFormSchema,
-} from '@/schemas/sendSOLForm';
+import { useWalletBalanceQuery } from '@/hooks';
+import useSendSolForm from '@/hooks/useSendSolForm';
 import { Box, Button, CircularProgress, Grid, Stack } from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { SubmitHandler } from 'react-hook-form';
+import { useIsMutating } from '@tanstack/react-query';
 import AmountInput from './AmountInput';
 import RecipientAddressInput from './WalletAddressInput';
 
 const SendSOLForm = () => {
   const { publicKey } = useWallet();
+  const { data: walletBalanceData, isLoading: isBalanceLoading } =
+    useWalletBalanceQuery();
+
+  const isMutating = useIsMutating({ mutationKey: ['transferSol'] });
+  const isTransferring = isMutating > 0;
+
   const {
-    data: walletBalanceData,
-    refetch: refetchWalletBalance,
-    isLoading: isBalanceLoading,
-  } = useWalletBalanceQuery();
-  const { refetch: refetchTransferHistory } = useTransferHistoryQuery();
-  const { mutate, isLoading: isMutationLoading } = useTransferSolMutation();
+    formMethods: { control, handleSubmit },
+    onSubmit,
+  } = useSendSolForm();
 
-  const { control, handleSubmit, setError } = useZodForm({
-    schema: sendSOLFormSchema,
-    defaultValues: {
-      recipientAddress: '',
-    },
-  });
-
-  const walletBalance = walletBalanceData?.solBalance;
-
-  const onSubmit: SubmitHandler<SendSOLFormSchemaInput> = ({
-    recipientAddress,
-    amount,
-  }) => {
-    const isInsufficientBalance = !walletBalance || walletBalance < amount;
-    const isSameAddress = recipientAddress === publicKey?.toString();
-    const isError = isInsufficientBalance || isSameAddress;
-
-    if (isInsufficientBalance) {
-      setError('amount', {
-        type: 'custom',
-        message: 'Insufficient balance',
-      });
-    }
-
-    if (isSameAddress) {
-      setError('recipientAddress', {
-        type: 'custom',
-        message: 'Cannot send to same address',
-      });
-    }
-
-    // Skip mutation on error
-    if (isError) return;
-
-    mutate(
-      { recipientAddress, amount },
-      {
-        onSuccess: () => {
-          // Refetch wallet balance and transaction history after success
-          refetchWalletBalance();
-          refetchTransferHistory();
-        },
-      }
-    );
-  };
+  const solBalance = walletBalanceData?.solBalance;
+  const isFormDisabled = !publicKey || isTransferring > 0;
 
   return (
     <Stack component="form" spacing={2} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
         <Grid item lg={8}>
-          <RecipientAddressInput name="recipientAddress" control={control} />
+          <RecipientAddressInput
+            name="recipientAddress"
+            disabled={isFormDisabled}
+            control={control}
+          />
         </Grid>
 
         <Grid item lg={4}>
-          <AmountInput name="amount" control={control} />
+          <AmountInput
+            name="amount"
+            disabled={isFormDisabled}
+            control={control}
+          />
         </Grid>
       </Grid>
 
@@ -86,13 +46,13 @@ const SendSOLForm = () => {
         <Button
           variant="contained"
           type="submit"
-          disabled={!publicKey || isMutationLoading}
+          disabled={isFormDisabled}
           sx={{ width: '100%' }}
         >
           {publicKey ? 'Send SOL' : 'Please connect wallet'}
         </Button>
 
-        {isMutationLoading && (
+        {isTransferring && (
           <CircularProgress
             size={24}
             sx={{
@@ -113,8 +73,8 @@ const SendSOLForm = () => {
             size={16}
             sx={{ position: 'relative', bottom: '-3px', ml: '4px' }}
           />
-        ) : walletBalance ? (
-          `${walletBalance} SOL`
+        ) : solBalance ? (
+          `${solBalance} SOL`
         ) : (
           'N/A'
         )}

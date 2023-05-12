@@ -4,11 +4,12 @@ import { NumericFormat } from 'react-number-format';
 import { SendSOLFormSchemaInput } from '../../schemas/sendSOLForm';
 
 interface Props {
-  name: keyof SendSOLFormSchemaInput;
   control: Control<SendSOLFormSchemaInput>;
+  name: keyof SendSOLFormSchemaInput;
+  disabled?: boolean;
 }
 
-const AmountInput = ({ name, control }: Props) => {
+const AmountInput = ({ name, control, disabled }: Props) => {
   return (
     <Controller
       name={name}
@@ -35,6 +36,7 @@ const AmountInput = ({ name, control }: Props) => {
           }}
           error={!!error}
           helperText={error?.message}
+          disabled={disabled}
         />
       )}
     />

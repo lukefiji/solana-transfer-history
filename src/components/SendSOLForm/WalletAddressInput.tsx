@@ -3,11 +3,12 @@ import { Control, Controller } from 'react-hook-form';
 import { SendSOLFormSchemaInput } from '../../schemas/sendSOLForm';
 
 interface Props {
-  name: keyof SendSOLFormSchemaInput;
   control: Control<SendSOLFormSchemaInput>;
+  name: keyof SendSOLFormSchemaInput;
+  disabled?: boolean;
 }
 
-const RecipientAddressInput = ({ name, control }: Props) => {
+const RecipientAddressInput = ({ control, name, disabled }: Props) => {
   return (
     <Controller
       name={name}
@@ -21,6 +22,8 @@ const RecipientAddressInput = ({ name, control }: Props) => {
           label="Wallet Address"
           error={!!error}
           helperText={error?.message}
+          disabled={disabled}
+          autoComplete="off"
         />
       )}
     />
