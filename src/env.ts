@@ -8,8 +8,9 @@ export const env = createEnv({
    * Will throw if you access these variables on the client.
    */
   server: {
-    DATABASE_URL: z.string().url(),
     NODE_ENV: z.enum(['development', 'test', 'production']),
+    DATABASE_URL: z.string().url(),
+    ALGOLIA_ADMIN_API_KEY: z.string().min(1),
   },
   /*
    * Environment variables available on the client (and server).
@@ -20,6 +21,7 @@ export const env = createEnv({
     NEXT_PUBLIC_WALLET_ADAPTER_NETWORK: z.nativeEnum(WalletAdapterNetwork),
     NEXT_PUBLIC_ALGOLIA_APP_ID: z.string().min(1),
     NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY: z.string().min(1),
+    NEXT_PUBLIC_ALGOLIA_INDEX_NAME: z.string().min(1),
   },
   /*
    * Due to how Next.js bundles environment variables on Edge and Client,
@@ -28,12 +30,17 @@ export const env = createEnv({
    * 💡 You'll get typeerrors if not all variables from `server` & `client` are included here.
    */
   runtimeEnv: {
-    DATABASE_URL: process.env.DATABASE_URL,
+    // Server
     NODE_ENV: process.env.NODE_ENV,
+    DATABASE_URL: process.env.DATABASE_URL,
+    ALGOLIA_ADMIN_API_KEY: process.env.ALGOLIA_ADMIN_API_KEY,
+
+    // Client
     NEXT_PUBLIC_WALLET_ADAPTER_NETWORK:
       process.env.NEXT_PUBLIC_WALLET_ADAPTER_NETWORK,
     NEXT_PUBLIC_ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
     NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY:
       process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY,
+    NEXT_PUBLIC_ALGOLIA_INDEX_NAME: process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME,
   },
 });

@@ -1,11 +1,22 @@
-import prisma from '@/server/prisma';
+import { env } from '@/env';
+import { Transfer } from '@prisma/client';
+import algoliasearch from 'algoliasearch';
 import { NextApiRequest, NextApiResponse } from 'next';
+
+// Connect and authenticate with Algolia
+const client = algoliasearch(
+  env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  env.ALGOLIA_ADMIN_API_KEY
+);
+
+// Create a new index and add a record
+const index = client.initIndex(env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME);
 
 async function getTransfers(_: NextApiRequest, res: NextApiResponse) {
   try {
-    const transfers = await prisma.transfer.findMany();
+    const { hits } = await index.search<Transfer>('');
 
-    return res.status(200).json(transfers);
+    return res.status(200).json(hits);
   } catch (error) {
     console.error(error);
 
@@ -19,18 +30,19 @@ async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
   try {
     const body = req.body;
 
-    const newEntry = await prisma.transfer.create({
-      data: {
-        from: body.from,
-        to: body.to,
-        amount: body.amount,
-        lamports: body.lamports,
-        signature: body.signature,
-        block: body.block,
-      },
-    });
+    const record = {
+      objectID: body.signature, // Required by Algolia
+      from: body.from,
+      to: body.to,
+      amount: body.amount,
+      lamports: body.lamports,
+      signature: body.signature,
+      block: body.block,
+    };
 
-    return res.status(200).json(newEntry);
+    const result = await index.saveObject(record);
+
+    return res.status(200).json(result);
   } catch (error) {
     console.error(error);
 

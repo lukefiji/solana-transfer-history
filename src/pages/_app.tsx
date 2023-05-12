@@ -1,3 +1,4 @@
+import { env } from '@/env';
 import Web3Provider from '@/providers/Web3Provider';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -34,8 +35,8 @@ const queryClient = new QueryClient({
 
 // Algolia Search
 const searchClient = algoliasearch(
-  '2KPWEBR2T1',
-  '33c32fa172c60ecdd1cecdc319af185d'
+  env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_API_KEY
 );
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -44,7 +45,10 @@ export default function App({ Component, pageProps }: AppProps) {
       <Web3Provider>
         <QueryClientProvider client={queryClient}>
           <CssBaseline />
-          <InstantSearch searchClient={searchClient} indexName="instant_search">
+          <InstantSearch
+            searchClient={searchClient}
+            indexName={env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
+          >
             <main className={roboto.className}>
               <Component {...pageProps} />
             </main>
