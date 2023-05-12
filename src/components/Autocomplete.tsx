@@ -1,5 +1,5 @@
+import { Transfer } from '@/schemas/transfer';
 import { autocomplete, AutocompleteOptions } from '@algolia/autocomplete-js';
-import { Transfer } from '@prisma/client';
 import { createElement, Fragment, useEffect, useRef } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 

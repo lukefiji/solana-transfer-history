@@ -10,3 +10,9 @@ export const createTransferSchema = z.object({
 });
 
 export type CreateTransferSchemaType = z.infer<typeof createTransferSchema>;
+
+export type Transfer = CreateTransferSchemaType & {
+  objectID: string; // Required by Algolia
+  timestamp: number;
+  createdAt: string;
+};

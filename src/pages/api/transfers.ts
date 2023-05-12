@@ -1,5 +1,5 @@
 import { env } from '@/env';
-import { Transfer } from '@prisma/client';
+import { Transfer } from '@/schemas/transfer';
 import algoliasearch from 'algoliasearch';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -30,7 +30,9 @@ async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
   try {
     const body = req.body;
 
-    const record = {
+    const now = Date.now();
+
+    const record: Transfer = {
       objectID: body.signature, // Required by Algolia
       from: body.from,
       to: body.to,
@@ -38,6 +40,8 @@ async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
       lamports: body.lamports,
       signature: body.signature,
       block: body.block,
+      timestamp: now,
+      createdAt: new Date(now).toISOString(),
     };
 
     const result = await index.saveObject(record);

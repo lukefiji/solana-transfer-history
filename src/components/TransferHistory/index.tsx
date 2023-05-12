@@ -46,7 +46,7 @@ const TransferHistory = ({}: Props) => {
         <TableBody>
           {transferHistory.map((row) => (
             <TableRow
-              key={row.id}
+              key={row.objectID}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row" sx={trimTextStyles}>
