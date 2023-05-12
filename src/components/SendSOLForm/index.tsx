@@ -20,7 +20,7 @@ const SendSOLForm = () => {
   } = useSendSolForm();
 
   const solBalance = walletBalanceData?.solBalance;
-  const isFormDisabled = !publicKey || isTransferring > 0;
+  const isFormDisabled = !publicKey || isTransferring;
 
   return (
     <Stack component="form" spacing={2} onSubmit={handleSubmit(onSubmit)}>
