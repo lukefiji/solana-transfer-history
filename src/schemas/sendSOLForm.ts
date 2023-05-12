@@ -1,7 +1,7 @@
 import { isValidAddress } from '@/utils';
 import { z } from 'zod';
 
-export const sendSOLFormSchema = z.object({
+export const sendSolFormSchema = z.object({
   recipientAddress: z
     .string()
     .min(1, { message: 'Required' })
@@ -11,4 +11,4 @@ export const sendSOLFormSchema = z.object({
   amount: z.number().gt(0, { message: 'Must be greater than 0' }),
 });
 
-export type SendSOLFormSchemaInput = z.infer<typeof sendSOLFormSchema>;
+export type SendSolFormSchemaInput = z.infer<typeof sendSolFormSchema>;

@@ -6,7 +6,7 @@ import { useIsMutating } from '@tanstack/react-query';
 import AmountInput from './AmountInput';
 import RecipientAddressInput from './WalletAddressInput';
 
-const SendSOLForm = () => {
+const SendSolForm = () => {
   const { publicKey } = useWallet();
   const { data: walletBalanceData, isLoading: isBalanceLoading } =
     useWalletBalanceQuery();
@@ -83,4 +83,4 @@ const SendSOLForm = () => {
   );
 };
 
-export default SendSOLForm;
+export default SendSolForm;

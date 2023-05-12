@@ -1,4 +1,4 @@
-import { SendSOLFormSchemaInput } from '@/schemas/sendSOLForm';
+import { SendSolFormSchemaInput } from '@/schemas/sendSolForm';
 import { Transfer } from '@/schemas/transfer';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
@@ -19,7 +19,7 @@ function useTransferSolMutation() {
     async ({
       recipientAddress,
       amount,
-    }: SendSOLFormSchemaInput): Promise<Transfer> => {
+    }: SendSolFormSchemaInput): Promise<Transfer> => {
       try {
         if (!publicKey) {
           throw new WalletNotConnectedError();

@@ -1,10 +1,10 @@
+import { SendSolFormSchemaInput } from '@/schemas/sendSolForm';
 import { TextField } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
-import { SendSOLFormSchemaInput } from '../../schemas/sendSOLForm';
 
 interface Props {
-  control: Control<SendSOLFormSchemaInput>;
-  name: keyof SendSOLFormSchemaInput;
+  control: Control<SendSolFormSchemaInput>;
+  name: keyof SendSolFormSchemaInput;
   disabled?: boolean;
 }
 

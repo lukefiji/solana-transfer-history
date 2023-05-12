@@ -1,4 +1,4 @@
-import { ConnectWallet, SendSOLForm, TransferHistory } from '@/components';
+import { ConnectWallet, SendSolForm, TransferHistory } from '@/components';
 import { Container, Stack } from '@mui/material';
 import Head from 'next/head';
 
@@ -21,7 +21,7 @@ export default function Home() {
         >
           <h1>SOL Transfer History</h1>
 
-          <SendSOLForm />
+          <SendSolForm />
 
           <ConnectWallet />
         </Stack>

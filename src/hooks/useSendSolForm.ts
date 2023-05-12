@@ -5,16 +5,16 @@ import {
   useZodForm,
 } from '@/hooks';
 import {
-  SendSOLFormSchemaInput,
-  sendSOLFormSchema,
-} from '@/schemas/sendSOLForm';
+  SendSolFormSchemaInput,
+  sendSolFormSchema,
+} from '@/schemas/sendSolForm';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useCallback } from 'react';
 import { SubmitHandler, UseFormReturn } from 'react-hook-form';
 
 type UseSendSolFormReturn = {
-  formMethods: UseFormReturn<SendSOLFormSchemaInput>;
-  onSubmit: SubmitHandler<SendSOLFormSchemaInput>;
+  formMethods: UseFormReturn<SendSolFormSchemaInput>;
+  onSubmit: SubmitHandler<SendSolFormSchemaInput>;
 };
 
 function useSendSolForm(): UseSendSolFormReturn {
@@ -25,7 +25,7 @@ function useSendSolForm(): UseSendSolFormReturn {
   const { mutate } = useTransferSolMutation();
 
   const formMethods = useZodForm({
-    schema: sendSOLFormSchema,
+    schema: sendSolFormSchema,
     defaultValues: {
       recipientAddress: '',
     },
@@ -33,7 +33,7 @@ function useSendSolForm(): UseSendSolFormReturn {
   const { setError } = formMethods;
 
   const solBalance = walletBalanceData?.solBalance;
-  const onSubmit: SubmitHandler<SendSOLFormSchemaInput> = useCallback(
+  const onSubmit: SubmitHandler<SendSolFormSchemaInput> = useCallback(
     ({ recipientAddress, amount }) => {
       const isInsufficientBalance = !solBalance || solBalance < amount;
       const isSameAddress = recipientAddress === publicKey?.toString();
