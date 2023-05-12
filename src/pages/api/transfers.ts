@@ -1,9 +1,9 @@
 import { env } from '@/env';
 import {
   CreateTransferSchemaType,
-  Transfer,
   createTransferSchema,
 } from '@/schemas/transfer';
+import prisma from '@/server/prisma';
 import algoliasearch from 'algoliasearch';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -14,13 +14,13 @@ const client = algoliasearch(
 );
 
 // Create a new index and add a record
-const index = client.initIndex(env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME);
+const algoliaIndex = client.initIndex(env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME);
 
 async function getTransfers(_: NextApiRequest, res: NextApiResponse) {
   try {
-    const { hits } = await index.search<Transfer>('');
+    const transfers = await prisma.transfer.findMany();
 
-    return res.status(200).json(hits);
+    return res.status(200).json(transfers);
   } catch (error) {
     console.error(error);
 
@@ -44,22 +44,28 @@ async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
       });
     }
 
-    // Ship data to Algolia
-    const now = Date.now();
-    const record: Transfer = {
-      objectID: body.signature, // Required by Algolia
+    const record: CreateTransferSchemaType = {
       from: body.from,
       to: body.to,
       amount: body.amount,
       lamports: body.lamports,
-      signature: body.signature,
       block: body.block,
-      timestamp: now,
-      createdAt: new Date(now).toISOString(),
+      signature: body.signature,
     };
-    const result = await index.saveObject(record);
 
-    return res.status(200).json(result);
+    // Parallelize saving to DB & sending to algolia
+    const [dbResponse, _] = await Promise.all([
+      await prisma.transfer.create({
+        data: record,
+      }),
+      await algoliaIndex.saveObject({
+        ...record,
+        objectID: body.signature,
+        timestamp: Date.now(),
+      }),
+    ]);
+
+    return res.status(200).json(dbResponse);
   } catch (error) {
     console.error(error);
 

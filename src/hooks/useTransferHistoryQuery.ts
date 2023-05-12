@@ -1,8 +1,8 @@
-import { Transfer } from '@/schemas/transfer';
+import { Transfer } from '@prisma/client';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
 
-async function fetchTransferHistory(): Promise<Array<Transfer>> {
+async function fetchTransferHistory() {
   const response = await fetch('/api/transfers', {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },

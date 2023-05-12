@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.1.0",
     "@mui/material": "^5.12.3",
+    "@prisma/client": "^4.14.0",
     "@solana/wallet-adapter-base": "^0.9.22",
     "@solana/wallet-adapter-material-ui": "^0.16.30",
     "@solana/wallet-adapter-react": "^0.15.32",
@@ -41,6 +42,7 @@
     "@tanstack/eslint-plugin-query": "^4.29.4",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "2.8.8",
-    "prettier-plugin-organize-imports": "^3.2.2"
+    "prettier-plugin-organize-imports": "^3.2.2",
+    "prisma": "^4.14.0"
   }
 }

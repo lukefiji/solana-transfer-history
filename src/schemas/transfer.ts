@@ -6,7 +6,7 @@ export const createTransferSchema = z.object({
   amount: z.number().gte(0),
   lamports: z.number().gte(0),
   signature: z.string().trim().min(1),
-  block: z.string().trim().min(1),
+  block: z.number().min(1),
 });
 
 export type CreateTransferSchemaType = z.infer<typeof createTransferSchema>;
@@ -14,5 +14,5 @@ export type CreateTransferSchemaType = z.infer<typeof createTransferSchema>;
 export type Transfer = CreateTransferSchemaType & {
   objectID: string; // Required by Algolia
   timestamp: number;
-  createdAt: string;
+  createdAt: Date | string;
 };
