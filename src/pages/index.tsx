@@ -1,5 +1,5 @@
 import { ConnectWallet, SendSolForm, TransferHistory } from '@/components';
-import { Container, Stack } from '@mui/material';
+import { Container, Stack, Typography } from '@mui/material';
 import Head from 'next/head';
 
 export default function Home() {
@@ -14,19 +14,22 @@ export default function Home() {
 
       <Container maxWidth="lg">
         <Stack
-          spacing={2}
+          spacing={4}
           justifyContent="center"
           alignItems="center"
           useFlexGap
+          sx={{ mt: 3 }}
         >
-          <h1>SOL Transfer History</h1>
+          <Typography variant="h2" align="center" sx={{ fontWeight: 700 }}>
+            SOL Transfer History
+          </Typography>
+
+          <ConnectWallet />
 
           <SendSolForm />
 
-          <ConnectWallet />
+          <TransferHistory />
         </Stack>
-
-        <TransferHistory />
       </Container>
     </>
   );

@@ -1,6 +1,13 @@
 import { useWalletBalanceQuery } from '@/hooks';
 import useSendSolForm from '@/hooks/useSendSolForm';
-import { Box, Button, CircularProgress, Grid, Stack } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useIsMutating } from '@tanstack/react-query';
 import AmountInput from './AmountInput';
@@ -24,23 +31,29 @@ const SendSolForm = () => {
 
   return (
     <Stack component="form" spacing={2} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2}>
-        <Grid item lg={8}>
-          <RecipientAddressInput
-            name="recipientAddress"
-            disabled={isFormDisabled}
-            control={control}
-          />
-        </Grid>
+      <Box>
+        <Typography variant="h5" sx={{ mb: 2, fontWeight: 500 }}>
+          Transfer SOL
+        </Typography>
 
-        <Grid item lg={4}>
-          <AmountInput
-            name="amount"
-            disabled={isFormDisabled}
-            control={control}
-          />
+        <Grid container spacing={2}>
+          <Grid item lg={8}>
+            <RecipientAddressInput
+              name="recipientAddress"
+              disabled={isFormDisabled}
+              control={control}
+            />
+          </Grid>
+
+          <Grid item lg={4}>
+            <AmountInput
+              name="amount"
+              disabled={isFormDisabled}
+              control={control}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
 
       <Box sx={{ position: 'relative', width: '100%' }}>
         <Button
@@ -66,7 +79,7 @@ const SendSolForm = () => {
         )}
       </Box>
 
-      <p>
+      <Typography variant="body1">
         Your balance:{' '}
         {isBalanceLoading ? (
           <CircularProgress
@@ -78,7 +91,7 @@ const SendSolForm = () => {
         ) : (
           'N/A'
         )}
-      </p>
+      </Typography>
     </Stack>
   );
 };

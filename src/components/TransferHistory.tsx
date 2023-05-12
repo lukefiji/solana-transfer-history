@@ -1,5 +1,6 @@
 import { useTransferHistoryQuery } from '@/hooks';
 import {
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -8,13 +9,6 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { ReactNode } from 'react';
-
-interface Props {}
-
-const CustomTableCell = ({ children, ...props }: { children: ReactNode }) => (
-  <TableCell {...props}>{children}</TableCell>
-);
 
 const trimTextStyles = (width: number = 150) => ({
   maxWidth: width,
@@ -22,8 +16,10 @@ const trimTextStyles = (width: number = 150) => ({
   textOverflow: 'ellipsis',
 });
 
+interface Props {}
+
 const TransferHistory = ({}: Props) => {
-  const { data: transferHistoryData } = useTransferHistoryQuery();
+  const { data: transferHistoryData, isLoading } = useTransferHistoryQuery();
   const transferHistory = transferHistoryData ?? [];
 
   return (
@@ -41,25 +37,40 @@ const TransferHistory = ({}: Props) => {
         </TableHead>
 
         <TableBody>
-          {transferHistory.map((row) => (
+          {isLoading ? (
             <TableRow
-              key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row" sx={trimTextStyles(100)}>
-                {row.from}
-              </TableCell>
-              <TableCell align="right" sx={trimTextStyles(100)}>
-                {row.to}
-              </TableCell>
-              <TableCell align="right">{row.amount} SOL</TableCell>
-              <TableCell align="right">{row.block}</TableCell>
-              <TableCell sx={trimTextStyles(150)}>{row.signature}</TableCell>
-              <TableCell align="right">
-                {new Date(row.createdAt).toLocaleDateString('en-US')}
+              <TableCell
+                component="th"
+                colSpan={6}
+                scope="row"
+                sx={{ verticalAlign: 'center', textAlign: 'center', py: 8 }}
+              >
+                <CircularProgress size={48} />
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            transferHistory.map((row) => (
+              <TableRow
+                key={row.id}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row" sx={trimTextStyles(100)}>
+                  {row.from}
+                </TableCell>
+                <TableCell align="right" sx={trimTextStyles(100)}>
+                  {row.to}
+                </TableCell>
+                <TableCell align="right">{row.amount} SOL</TableCell>
+                <TableCell align="right">{row.block}</TableCell>
+                <TableCell sx={trimTextStyles(150)}>{row.signature}</TableCell>
+                <TableCell align="right">
+                  {new Date(row.createdAt).toLocaleDateString('en-US')}
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </TableContainer>
