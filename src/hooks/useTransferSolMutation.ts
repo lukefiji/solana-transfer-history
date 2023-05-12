@@ -1,3 +1,4 @@
+import { SendSOLFormSchemaInput } from '@/schemas/sendSOLForm';
 import { Transfer } from '@/schemas/transfer';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
@@ -9,32 +10,16 @@ import {
 } from '@solana/web3.js';
 import { useMutation } from '@tanstack/react-query';
 import { useCallback } from 'react';
-import useWalletBalanceQuery from './useWalletBalanceQuery';
-
-export interface TransferSolInput {
-  recipientAddress: string;
-  amount: number;
-}
-
-export type UseTransferSolMutationReturn = {
-  from: string;
-  to: string;
-  amount: number;
-  lamports: number;
-  signature: string;
-  block: number;
-};
 
 function useTransferSolMutation() {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
-  const { refetch: refetchWalletBalance } = useWalletBalanceQuery();
 
   const transferSol = useCallback(
     async ({
       recipientAddress,
       amount,
-    }: TransferSolInput): Promise<Transfer> => {
+    }: SendSOLFormSchemaInput): Promise<Transfer> => {
       try {
         if (!publicKey) {
           throw new WalletNotConnectedError();
@@ -82,15 +67,12 @@ function useTransferSolMutation() {
         });
         const jsonData: Transfer = await response.json();
 
-        // Refetch wallet balance after completion
-        refetchWalletBalance();
-
         return jsonData;
       } catch (error) {
         throw error;
       }
     },
-    [publicKey, sendTransaction, connection, refetchWalletBalance]
+    [publicKey, sendTransaction, connection]
   );
 
   return useMutation({ mutationFn: transferSol });

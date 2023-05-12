@@ -1,6 +1,7 @@
 import { Transfer } from '@/schemas/transfer';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useQuery } from '@tanstack/react-query';
+
 async function fetchTransferHistory(): Promise<Array<Transfer>> {
   const response = await fetch('/api/transfers', {
     method: 'GET',

@@ -16,18 +16,15 @@ const CustomTableCell = ({ children, ...props }: { children: ReactNode }) => (
   <TableCell {...props}>{children}</TableCell>
 );
 
-const trimTextStyles = {
-  maxWidth: 150,
+const trimTextStyles = (width: number = 150) => ({
+  maxWidth: width,
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  borderStyle: 'border-box',
-};
+});
 
 const TransferHistory = ({}: Props) => {
   const { data: transferHistoryData } = useTransferHistoryQuery();
   const transferHistory = transferHistoryData ?? [];
-
-  console.log(JSON.stringify(transferHistory));
 
   return (
     <TableContainer component={Paper}>
@@ -38,8 +35,8 @@ const TransferHistory = ({}: Props) => {
             <TableCell>To</TableCell>
             <TableCell align="right">Amount</TableCell>
             <TableCell align="right">Block</TableCell>
-            <TableCell align="right">Signature</TableCell>
-            <TableCell align="right">Created</TableCell>
+            <TableCell>Signature</TableCell>
+            <TableCell align="right">Date</TableCell>
           </TableRow>
         </TableHead>
 
@@ -49,17 +46,15 @@ const TransferHistory = ({}: Props) => {
               key={row.objectID}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row" sx={trimTextStyles}>
+              <TableCell component="th" scope="row" sx={trimTextStyles(100)}>
                 {row.from}
               </TableCell>
-              <TableCell align="right" sx={trimTextStyles}>
+              <TableCell align="right" sx={trimTextStyles(100)}>
                 {row.to}
               </TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
+              <TableCell align="right">{row.amount} SOL</TableCell>
               <TableCell align="right">{row.block}</TableCell>
-              <TableCell align="right" sx={trimTextStyles}>
-                {row.signature}
-              </TableCell>
+              <TableCell sx={trimTextStyles(150)}>{row.signature}</TableCell>
               <TableCell align="right">
                 {new Date(row.createdAt).toLocaleDateString('en-US')}
               </TableCell>

@@ -1,5 +1,4 @@
-import { ConnectWallet, SendSOLForm } from '@/components';
-import TransferHistory from '@/components/TransferHistory';
+import { ConnectWallet, SendSOLForm, TransferHistory } from '@/components';
 import { Container, Stack } from '@mui/material';
 import Head from 'next/head';
 

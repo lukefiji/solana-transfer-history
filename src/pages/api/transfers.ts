@@ -1,5 +1,9 @@
 import { env } from '@/env';
-import { Transfer } from '@/schemas/transfer';
+import {
+  CreateTransferSchemaType,
+  Transfer,
+  createTransferSchema,
+} from '@/schemas/transfer';
 import algoliasearch from 'algoliasearch';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -28,10 +32,20 @@ async function getTransfers(_: NextApiRequest, res: NextApiResponse) {
 
 async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const body = req.body;
+    const body: CreateTransferSchemaType = req.body;
 
+    // Validate request body
+    const response = createTransferSchema.safeParse(body);
+    if (!response.success) {
+      const { errors } = response.error;
+
+      return res.status(400).json({
+        error: { message: 'Invalid request', errors },
+      });
+    }
+
+    // Ship data to Algolia
     const now = Date.now();
-
     const record: Transfer = {
       objectID: body.signature, // Required by Algolia
       from: body.from,
@@ -43,7 +57,6 @@ async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
       timestamp: now,
       createdAt: new Date(now).toISOString(),
     };
-
     const result = await index.saveObject(record);
 
     return res.status(200).json(result);
