@@ -1,4 +1,4 @@
-import { SendSolFormSchemaInput } from '@/schemas/sendSolForma';
+import { SendSolFormSchemaInput } from '@/schemas/sendSolForm';
 import { TextField } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 

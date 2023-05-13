@@ -7,7 +7,7 @@ import {
 import {
   SendSolFormSchemaInput,
   sendSolFormSchema,
-} from '@/schemas/sendSolForma';
+} from '@/schemas/sendSolForm';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useCallback } from 'react';
 import { SubmitHandler, UseFormReturn } from 'react-hook-form';
