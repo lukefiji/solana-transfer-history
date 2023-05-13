@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+export const getTransfersSchema = z.object({
+  publicKey: z.string().trim().min(1),
+});
+
+export type GetTransfersSchemaType = z.infer<typeof getTransfersSchema>;
+
 export const createTransferSchema = z.object({
   from: z.string().trim().min(1),
   to: z.string().trim().min(1),

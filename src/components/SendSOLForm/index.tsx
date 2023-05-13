@@ -37,7 +37,7 @@ const SendSolForm = () => {
         </Typography>
 
         <Grid container spacing={2}>
-          <Grid item lg={8}>
+          <Grid item xs={12} sm={8}>
             <RecipientAddressInput
               name="recipientAddress"
               disabled={isFormDisabled}
@@ -45,7 +45,7 @@ const SendSolForm = () => {
             />
           </Grid>
 
-          <Grid item lg={4}>
+          <Grid item xs={12} sm={4}>
             <AmountInput
               name="amount"
               disabled={isFormDisabled}
@@ -62,7 +62,7 @@ const SendSolForm = () => {
           disabled={isFormDisabled}
           sx={{ width: '100%' }}
         >
-          {publicKey ? 'Send SOL' : 'Please connect wallet'}
+          {publicKey ? 'Send SOL' : 'Connect wallet'}
         </Button>
 
         {isTransferring && (

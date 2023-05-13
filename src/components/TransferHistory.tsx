@@ -9,6 +9,7 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 const trimTextStyles = (width: number = 150) => ({
   maxWidth: width,
@@ -19,8 +20,16 @@ const trimTextStyles = (width: number = 150) => ({
 interface Props {}
 
 const TransferHistory = ({}: Props) => {
-  const { data: transferHistoryData, isLoading } = useTransferHistoryQuery();
-  const transferHistory = transferHistoryData ?? [];
+  const { publicKey } = useWallet();
+  const { data, isLoading } = useTransferHistoryQuery(publicKey);
+  const transferHistory = data ?? [];
+
+  if (!publicKey) {
+    return null;
+    // <Box>
+    //   <Typography variant="h6">Please connect a wallet.</Typography>
+    // </Box>
+  }
 
   return (
     <TableContainer component={Paper}>

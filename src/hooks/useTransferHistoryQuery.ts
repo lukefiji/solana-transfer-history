@@ -1,9 +1,11 @@
 import { Transfer } from '@prisma/client';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { PublicKey } from '@solana/web3.js';
 import { useQuery } from '@tanstack/react-query';
 
-async function fetchTransferHistory() {
-  const response = await fetch('/api/transfers', {
+async function fetchTransferHistory(publicKey: string) {
+  const params = new URLSearchParams({ publicKey }).toString();
+
+  const response = await fetch(`/api/transfers?${params}`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
@@ -13,14 +15,13 @@ async function fetchTransferHistory() {
   return jsonData;
 }
 
-function useWalletBalanceQuery() {
-  const { connection } = useConnection();
-  const { publicKey } = useWallet();
+function useWalletBalanceQuery(publicKey: PublicKey | null) {
+  const pubkey = publicKey?.toString() || '';
 
   return useQuery({
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ['transferHistory'],
-    queryFn: fetchTransferHistory,
+    queryKey: ['transferHistory', pubkey],
+    queryFn: () => fetchTransferHistory(pubkey),
+    enabled: !!pubkey,
   });
 }
 

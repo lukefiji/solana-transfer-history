@@ -2,6 +2,7 @@ import { env } from '@/env';
 import {
   CreateTransferSchemaType,
   createTransferSchema,
+  getTransfersSchema,
 } from '@/schemas/transfer';
 import prisma from '@/server/prisma';
 import { getTimestampInSeconds } from '@/utils';
@@ -17,9 +18,25 @@ const client = algoliasearch(
 // Create a new index and add a record
 const algoliaIndex = client.initIndex(env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME);
 
-async function getTransfers(_: NextApiRequest, res: NextApiResponse) {
+async function getTransfers(req: NextApiRequest, res: NextApiResponse) {
+  const { publicKey } = req.query;
+
+  // Validate request body
+  const result = getTransfersSchema.safeParse({ publicKey });
+  if (!result.success) {
+    const { errors } = result.error;
+
+    return res.status(400).json({
+      error: { message: 'Invalid request', errors },
+    });
+  }
+
   try {
-    const transfers = await prisma.transfer.findMany();
+    const transfers = await prisma.transfer.findMany({
+      where: {
+        from: result.data.publicKey,
+      },
+    });
 
     return res.status(200).json(transfers);
   } catch (error) {
@@ -36,9 +53,9 @@ async function createTransfer(req: NextApiRequest, res: NextApiResponse) {
     const body: CreateTransferSchemaType = req.body;
 
     // Validate request body
-    const response = createTransferSchema.safeParse(body);
-    if (!response.success) {
-      const { errors } = response.error;
+    const result = createTransferSchema.safeParse(body);
+    if (!result.success) {
+      const { errors } = result.error;
 
       return res.status(400).json({
         error: { message: 'Invalid request', errors },
