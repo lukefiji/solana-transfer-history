@@ -21,7 +21,8 @@ function useSendSolForm(): UseSendSolFormReturn {
   const { publicKey } = useWallet();
   const { data: walletBalanceData, refetch: refetchWalletBalance } =
     useWalletBalanceQuery();
-  const { refetch: refetchTransferHistory } = useTransferHistoryQuery();
+  const { refetch: refetchTransferHistory } =
+    useTransferHistoryQuery(publicKey);
   const { mutate } = useTransferSolMutation();
 
   const formMethods = useZodForm({
