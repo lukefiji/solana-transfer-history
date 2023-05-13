@@ -56,7 +56,7 @@ Zod is a schema declaration and validation library. In this application, it's us
 
 ESLint & Prettier are used to ensure consistent code standards throughout a codebase. I've decided to install `prettier-plugin-organize-imports` to auto-organize imported modules, and ``@tanstack/eslint-plugin-query` to enforce good practices while using TanStack Query.
 
-## Given more time, I would:
+## Given more time, I would
 
 - [*"Write tests. Not too many. Mostly integration."*](https://twitter.com/rauchg/status/807626710350839808)
 - Put more love into the UI's design and styling, I appreciate good design and I regretfully admit that it isn't up to my standards
@@ -64,6 +64,7 @@ ESLint & Prettier are used to ensure consistent code standards throughout a code
 - Figure out a way to ensure consistency between the database and the Algolia index
 - Authenticate user wallet with the backend using [NextAuth](https://next-auth.js.org/) + [`solana-next-auth`](https://github.com/BlockSmith-Labs/solana-next-auth)
   - Primarily, to secure the `/api/transfers` route for authenticated users only
+  - Also, to handle transaction signing on the backend
 - Spend more time in Solana Wallet Adapter's documentation
 - Use constants/enums when defining form field names, TanStack Query keys, and in other places where applicable - for scalability
 - Clean up folder/file structure. This can also be an iterative process as a project grows
