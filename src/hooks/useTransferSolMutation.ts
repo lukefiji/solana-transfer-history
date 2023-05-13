@@ -1,4 +1,4 @@
-import { SendSolFormSchemaInput } from '@/schemas/sendSolForm';
+import { SendSolFormSchemaInput } from '@/schemas/sendSolForma';
 import { Transfer } from '@/schemas/transfer';
 import { WalletNotConnectedError } from '@solana/wallet-adapter-base';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';

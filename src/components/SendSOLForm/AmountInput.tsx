@@ -1,4 +1,4 @@
-import { SendSolFormSchemaInput } from '@/schemas/sendSolForm';
+import { SendSolFormSchemaInput } from '@/schemas/sendSolForma';
 import { InputAdornment, TextField } from '@mui/material';
 import { Control, Controller } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
