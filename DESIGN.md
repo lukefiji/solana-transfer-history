@@ -21,9 +21,9 @@
 - [ESLint](https://eslint.org/)
 - [Prettier](https://prettier.io/)
 
-## Description
+## Rationale
 
-The project leverages Next.js at its core as an opinionated way to create a full-stack, server-side rendered React application. I feel that it is a safe choice for a new project due to the huge community surrounding the React/Next.js ecosystem - a lot of problems you may typically face most likely have already been solved.
+The project leverages Next.js at its core as an opinionated way to create a full-stack, server-side rendered React application. I feel that it is a safe choice for a new project given the huge community surrounding the React/Next.js ecosystem - a lot of problems you may typically face most likely have already been solved.
 
 TypeScript is used because it eliminates a whole class of errors through static type checking. Although this comes with a tradeoff of impacting development speed, TypeScript helps with scalability as the project size grows to the point where it becomes difficult to maintain its mental modal as a whole.
 

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@algolia/autocomplete-js": "^1.9.2",
+    "@algolia/autocomplete-theme-classic": "^1.9.2",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.1.0",
@@ -29,6 +30,7 @@
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
     "algoliasearch": "^4.17.0",
+    "autosuggest-highlight": "^3.3.4",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.1",
     "next": "13.4.1",
@@ -36,12 +38,14 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
     "react-instantsearch-hooks": "^6.43.0",
+    "react-instantsearch-hooks-web": "^6.43.0",
     "react-number-format": "^5.1.4",
     "typescript": "5.0.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^4.29.4",
+    "@types/autosuggest-highlight": "^3.2.0",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "2.8.8",
     "prettier-plugin-organize-imports": "^3.2.2",

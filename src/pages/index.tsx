@@ -1,4 +1,10 @@
-import { ConnectWallet, SendSolForm, TransferHistory } from '@/components';
+import {
+  ConnectWallet,
+  SearchTransactions,
+  SendSolForm,
+  TransferHistory,
+} from '@/components';
+
 import { Container, Stack, Typography } from '@mui/material';
 import Head from 'next/head';
 
@@ -27,6 +33,8 @@ export default function Home() {
           <ConnectWallet />
 
           <SendSolForm />
+
+          <SearchTransactions />
 
           <TransferHistory />
         </Stack>
